@@ -6,14 +6,14 @@ const openModal = (id) => {
     if (id) {
         fillingForm(id);
     }
-        modal.classList.add("d-block");
-    
-    
+    modal.classList.add("d-block");
 };
 
 export const closeModal = () => {
     modal.classList.remove("d-block");
     form.reset();
+    form.identificator.value = "";
+    form.imagesave.value = "";
     hidePreview();
 };
 

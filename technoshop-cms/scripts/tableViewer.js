@@ -1,30 +1,38 @@
 import { tableGoods } from "./elems.js";
 import { currencyFormatRUB } from "./utils.js";
 
-export const renderRow = ({ id, title, category, price }) => {
-    const goodsRow = document.createElement("tr");
-    goodsRow.classList.add("table-row", "table-goods-row");
-    goodsRow.dataset.id = id;
+const fillingRow = (goodsRow, { id, title, category, price }) => {
+  goodsRow.innerHTML = `
+  <td>${id}</td>
+  <td>${title}</td>
+  <td>${category}</td>
+  <td class="text-end">${currencyFormatRUB(price)};</td>
+  <td class="d-flex">
+    <button class="btn-table btn-delete">
+      <svg width="30" height="30">
+        <use xlink:href="#delete" />
+      </svg>
+    </button>
+  </td>
+`;
+  return goodsRow;
+}
 
-    goodsRow.innerHTML = `
-      <td>${id}</td>
-      <td>${title}</td>
-      <td>${category}</td>
-      <td class="text-end">${currencyFormatRUB(price)};</td>
-      <td class="d-flex">
-        <button class="btn-table btn-delete">
-          <svg width="30" height="30">
-            <use xlink:href="#delete" />
-          </svg>
-        </button>
-      </td>
-    `;
+export const renderRow = (data) => {
+  const goodsRow = document.createElement("tr");
+  goodsRow.classList.add("table-row", "table-goods-row");
+  goodsRow.dataset.id = data.id;
 
-    tableGoods.append(goodsRow);
+  tableGoods.append(fillingRow(goodsRow, data));
 };
 
-export const tableRender = (goods) => {
-    tableGoods.textContent = "";
+export const editRow = (data) => {
+  const goodsRow = document.querySelector(`[data-id="${data.id}"]`)
+  fillingRow(goodsRow, data);
+}
 
-    goods.forEach(renderRow);
+export const tableRender = (goods) => {
+  tableGoods.textContent = "";
+
+  goods.forEach(renderRow);
 };
